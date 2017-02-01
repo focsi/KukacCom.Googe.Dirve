@@ -8,39 +8,45 @@ using System.Threading.Tasks;
 
 namespace KukacCom.Google.Drive
 {
-    public class Uploader
+    public class Uploader : OperationBase
     {
         private const string MimeType = "";
+        private File m_Body = new File();
 
-        public string Description { get; set; }
-        public string SourcePath { get; set; }
-        
-        public string FileName 
-        {
-            get
+        public string Description 
+        { 
+            set
             {
-                return System.IO.Path.GetFileName( SourcePath );
+                m_Body.Description = value;
             }
         }
+        public string SourcePath { get; set; }
+        public string ParentId { get; set; }
 
-        public void Upload( DriveService service )
+        public void Upload()
         {
-            File body = new File();
-            body.Title = FileName;
-            body.Description = Description;
-            body.MimeType = MimeType;
+            m_Body.Title = System.IO.Path.GetFileName( SourcePath );
+            
+            m_Body.MimeType = MimeType;
+
+            SetParentId( m_Body );
 
             byte[] byteArray = System.IO.File.ReadAllBytes( SourcePath );
             System.IO.MemoryStream stream = new System.IO.MemoryStream( byteArray );
 
-            FilesResource.InsertMediaUpload request = service.Files.Insert( body, stream, MimeType );
+            FilesResource.InsertMediaUpload request = Drive.Service.Files.Insert( m_Body, stream, MimeType );
             request.Upload();
         }
-        /*    // Set the parent folder.
-    if (!String.IsNullOrEmpty(parentId)) {
-      body.Parents = new List<ParentReference>()
-          {new ParentReference() {Id = parentId}};
-    }
-*/
+
+        private void SetParentId( File body )
+        {
+            if ( !String.IsNullOrEmpty( ParentId ) )
+            {
+                body.Parents = new List<ParentReference>() { new ParentReference() { Id = ParentId } };
+            }
+        }
+
+
+ 
     }
 }

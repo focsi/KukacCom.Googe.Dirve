@@ -85,6 +85,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Folder.cs" />
+    <Compile Include="Drive.cs" />
+    <Compile Include="OperationBase.cs" />
     <Compile Include="Uploader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
