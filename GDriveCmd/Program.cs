@@ -12,12 +12,17 @@ namespace GDriveCmd
     {
         static void Main( string[] args )
         {
-            if ( args.Length == 1 )
+            var options = new CommandLineOptions();
+            if( CommandLine.Parser.Default.ParseArguments( args, options ) )
             {
-                Drive drive = new Drive();
-                drive.Init();
+                // Values are available here
+                if( !string.IsNullOrEmpty( options.UploadFile ))
+                {
+                    Drive drive = new Drive();
+                    drive.Init();
 
-                UploadTest( drive, args[0] );
+                    UploadTest( drive, options.UploadFile );
+                }
             }
         }
 
