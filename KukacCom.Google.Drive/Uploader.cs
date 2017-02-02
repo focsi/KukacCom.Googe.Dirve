@@ -1,5 +1,5 @@
-﻿using Google.Apis.Drive.v2;
-using Google.Apis.Drive.v2.Data;
+﻿using Google.Apis.Drive.v3;
+using Google.Apis.Drive.v3.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace KukacCom.Google.Drive
 
         public void Upload()
         {
-            m_Body.Title = System.IO.Path.GetFileName( SourcePath );
+            m_Body.Name = System.IO.Path.GetFileName( SourcePath );
             
             m_Body.MimeType = MimeType;
 
@@ -34,7 +34,7 @@ namespace KukacCom.Google.Drive
             byte[] byteArray = System.IO.File.ReadAllBytes( SourcePath );
             System.IO.MemoryStream stream = new System.IO.MemoryStream( byteArray );
 
-            FilesResource.InsertMediaUpload request = Drive.Service.Files.Insert( m_Body, stream, MimeType );
+            var request = Drive.Service.Files.Create( m_Body, stream, MimeType );
             request.Upload();
         }
 
@@ -42,7 +42,7 @@ namespace KukacCom.Google.Drive
         {
             if ( !String.IsNullOrEmpty( ParentId ) )
             {
-                body.Parents = new List<ParentReference>() { new ParentReference() { Id = ParentId } };
+                body.Parents = new List<string>() { ParentId };
             }
         }
 

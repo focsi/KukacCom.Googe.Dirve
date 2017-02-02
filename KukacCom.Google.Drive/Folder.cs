@@ -1,4 +1,4 @@
-﻿using Google.Apis.Drive.v2;
+﻿using Google.Apis.Drive.v3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +32,11 @@ namespace KukacCom.Google.Drive
                 request.Q = "\"" + parentId + "\" in parents and trashed = false and mimeType = \"application/vnd.google-apps.folder\"";
                 //request.Q = "\"0B-bnPfjeo_w8V2hLd2xWTHpjM0E\" in parents and trashed = false";
                 //request.Q = " trashed = false";
-                request.MaxResults = 100;
+                request.PageSize = 100;
                 request.PageToken = pageToken;
                 var response = request.Execute();
 
-                var folderId = response.Items.Where( f => f.Title == title ).Select( f => f.Id ).FirstOrDefault();
+                var folderId = response.Files.Where( f => f.Name == title ).Select( f => f.Id ).FirstOrDefault();
                 if ( !String.IsNullOrWhiteSpace( folderId ) )
                     return folderId;
 
