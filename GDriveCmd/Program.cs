@@ -16,17 +16,17 @@ namespace GDriveCmd
             if( CommandLine.Parser.Default.ParseArguments( args, options ) )
             {
                 // Values are available here
-                if( !string.IsNullOrEmpty( options.UploadFile ))
+                if( !string.IsNullOrEmpty( options.UploadFile ) && !string.IsNullOrEmpty( options.DestinationFolder ) )
                 {
                     Drive drive = new Drive();
                     drive.Init();
 
-                    UploadTest( drive, options.UploadFile );
+                    Upload( drive, options );
                 }
             }
         }
 
-        private static void UploadTest( Drive drive, string sourcePath )
+        private static void Upload( Drive drive, CommandLineOptions options )
         {
             Folder folder = new Folder()
             {
@@ -36,20 +36,11 @@ namespace GDriveCmd
             Uploader uploader = new Uploader()
             {
                 Drive = drive,
-                SourcePath = sourcePath,
-                Description = "Teszt",
-                ParentId = folder.GetFolderId( "Munka" )
+                SourcePath = options.UploadFile,
+                Description = options.DescriptionInfo,
+                ParentId = folder.GetFolderId( options.DestinationFolder )
             };
             uploader.Upload( );
-        }
-
-        private static void FolderTest( Drive drive )
-        {
-            Folder folder = new Folder()
-            {
-                Drive = drive
-            };
-            folder.GetFolderId( "Munka" );
         }
     }
 }
