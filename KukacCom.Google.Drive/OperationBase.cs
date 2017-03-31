@@ -8,6 +8,11 @@ namespace KukacCom.Google.Drive
 {
     public abstract class OperationBase
     {
-        public Drive Drive { get; set; }
+        protected OperationBase( Drive drive )
+        {
+            Drive = drive;
+        }
+
+        public Drive Drive { get; private set; }
     }
 }

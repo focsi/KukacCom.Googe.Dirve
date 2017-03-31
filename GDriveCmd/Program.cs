@@ -28,19 +28,15 @@ namespace GDriveCmd
 
         private static void Upload( Drive drive, CommandLineOptions options )
         {
-            Folder folder = new Folder()
-            {
-                Drive = drive
-            };
+            Folder folder = new Folder( drive, options.DestinationFolder );
 
-            Uploader uploader = new Uploader()
+            Uploader uploader = new Uploader( drive, folder )
             {
-                Drive = drive,
                 SourcePath = options.UploadFile,
-                Description = options.DescriptionInfo,
-                ParentId = folder.GetFolderId( options.DestinationFolder )
+                Description = options.DescriptionInfo
             };
-            uploader.Upload( );
+            //if ( !uploader.IsExists() )
+            uploader.Upload( options.OverWrite );
         }
     }
 }

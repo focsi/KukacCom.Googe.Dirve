@@ -1,16 +1,20 @@
 ﻿using Google.Apis.Drive.v3;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
+
 
 namespace KukacCom.Google.Drive
 {
     public class Folder : OperationBase
     {
-        public string GetFolderId( string path )
+        public string FolderId { get; private set; }
+
+        public Folder( Drive drive, string path ) : base( drive )
+        {
+            FolderId = GetFolderId( path );
+        }
+
+        private string GetFolderId( string path )
         {
             var folders = path.Split( '/' );
             string parentId = "root";
