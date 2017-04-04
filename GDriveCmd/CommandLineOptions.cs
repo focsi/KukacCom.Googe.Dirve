@@ -10,19 +10,22 @@ namespace GDriveCmd
 {
     class CommandLineOptions
     {
-        [Option( 'u', "upload", HelpText = "File to upload." )]
-        public string UploadFile { get; set; }
+        [ValueOption( 0 )]
+        public string SourceFile { get; set; }
 
-        [Option( 'd', "download", HelpText = "File to download." )]
-        public string DownloadFile { get; set; }
-
-        [Option( 'f', "destfolder", HelpText = "Destination folder." )]
+        [ValueOption(1 )]
         public string DestinationFolder { get; set; }
+
+        [Option( 'd', "download", HelpText = "Download mode", DefaultValue = false )]
+        public bool DownloadMode { get; set; }
+
+        [Option( 'u', "upload", HelpText = "Upload mode", DefaultValue = true )]
+        public bool UploadMode { get; set; }
 
         [Option( 'i', "info", HelpText = "Description info of uploaded file" )]
         public string DescriptionInfo { get; set; }
 
-        [Option( 'o', "info", HelpText = "Overwrite destination if file exists" )]
+        [Option( 'o', "overwrite", HelpText = "Overwrite destination if file exists" )]
         public bool OverWrite { get; set; }
 
         [ParserState]
@@ -31,8 +34,11 @@ namespace GDriveCmd
         [HelpOption]
         public string GetUsage()
         {
-            return HelpText.AutoBuild( this,
+            var help = HelpText.AutoBuild( this,
               ( HelpText current ) => HelpText.DefaultParsingErrorsHandler( this, current ) );
+            help.AddPreOptionsLine( "" );
+            help.AddPreOptionsLine( "Usage: GDriveCmd.exe source_file destination_folder [switches]" );
+            return help;
         }
     }
 }

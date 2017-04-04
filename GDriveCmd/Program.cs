@@ -15,13 +15,12 @@ namespace GDriveCmd
             var options = new CommandLineOptions();
             if( CommandLine.Parser.Default.ParseArguments( args, options ) )
             {
-                // Values are available here
-                if( !string.IsNullOrEmpty( options.UploadFile ) && !string.IsNullOrEmpty( options.DestinationFolder ) )
+                if( !string.IsNullOrEmpty( options.SourceFile ) && !string.IsNullOrEmpty( options.DestinationFolder ) )
                 {
                     Drive drive = new Drive();
                     drive.Init();
-
-                    Upload( drive, options );
+                    if( options.UploadMode )
+                        Upload( drive, options );
                 }
             }
         }
@@ -32,7 +31,7 @@ namespace GDriveCmd
 
             Uploader uploader = new Uploader( drive, folder )
             {
-                SourcePath = options.UploadFile,
+                SourcePath = options.SourceFile,
                 Description = options.DescriptionInfo
             };
             //if ( !uploader.IsExists() )
