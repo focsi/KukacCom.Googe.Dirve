@@ -10,16 +10,16 @@ namespace GDriveCmd
 {
     class CommandLineOptions
     {
-        [ValueOption( 0 )]
+        [ValueOption( 0 ) ]
         public string SourceFile { get; set; }
 
         [ValueOption(1 )]
         public string DestinationFolder { get; set; }
 
-        [Option( 'd', "download", HelpText = "Download mode", DefaultValue = false )]
+        [Option( 'd', "download", HelpText = "Download mode" )]
         public bool DownloadMode { get; set; }
 
-        [Option( 'u', "upload", HelpText = "Upload mode", DefaultValue = true )]
+        [Option( 'u', "upload", HelpText = "Upload mode")]
         public bool UploadMode { get; set; }
 
         [Option( 'i', "info", HelpText = "Description info of uploaded file" )]

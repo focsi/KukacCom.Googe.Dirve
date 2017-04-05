@@ -17,16 +17,28 @@ namespace GDriveCmd
             {
                 if( !string.IsNullOrEmpty( options.SourceFile ) && !string.IsNullOrEmpty( options.DestinationFolder ) )
                 {
-                    Drive drive = new Drive();
-                    drive.Init();
                     if( options.UploadMode )
-                        Upload( drive, options );
+                        Upload( options );
+                    else if( options.DownloadMode )
+                        Download( options );
+                    else
+                        Console.WriteLine( options.GetUsage() );
                 }
+                else
+                    Console.WriteLine( options.GetUsage() );
             }
         }
 
-        private static void Upload( Drive drive, CommandLineOptions options )
+        private static void Download( CommandLineOptions options )
         {
+            throw new NotImplementedException();
+        }
+
+        private static void Upload( CommandLineOptions options )
+        {
+            Drive drive = new Drive();
+            drive.Init();
+
             Folder folder = new Folder( drive, options.DestinationFolder );
 
             Uploader uploader = new Uploader( drive, folder )
