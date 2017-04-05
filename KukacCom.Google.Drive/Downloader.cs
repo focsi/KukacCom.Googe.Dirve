@@ -20,12 +20,15 @@ namespace KukacCom.Google.Drive
 
         public void Download( bool overwrite )
         {
+            string localPath = Path.Combine( LocalFolder, DriveFileName );
+            if( File.Exists( localPath ) && !overwrite )
+                throw new FileExistsButNoOverwriteExeption();
+
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
 
             var request = Drive.Service.Files.Get( ParentFolder.GetFileId( DriveFileName ) );
             request.Download( stream );
 
-            string localPath = Path.Combine( LocalFolder, DriveFileName );
             System.IO.File.WriteAllBytes( localPath, stream.GetBuffer() );
         }
     }

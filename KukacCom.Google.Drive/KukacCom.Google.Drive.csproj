@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Downloader.cs" />
+    <Compile Include="FileExistsButNoOverwriteExeption.cs" />
     <Compile Include="FileOperation.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="Drive.cs" />

@@ -27,6 +27,8 @@ namespace GDriveCmd
                 else
                     Console.WriteLine( options.GetUsage() );
             }
+
+            Console.ReadLine();
         }
 
         private static void Upload( CommandLineOptions options )
@@ -41,8 +43,17 @@ namespace GDriveCmd
                 SourcePath = options.SourceFile,
                 Description = options.DescriptionInfo
             };
-            //if ( !uploader.IsExists() )
-            uploader.Upload( options.OverWrite );
+
+            try
+            {
+                uploader.Upload( options.OverWrite );
+                Console.WriteLine( "File is uploaded." );
+
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine( $"Error: {ex.Message}" );
+            }
         }
 
         private static void Download( CommandLineOptions options )
@@ -56,7 +67,19 @@ namespace GDriveCmd
                 DriveFileName = System.IO.Path.GetFileName( options.SourceFile ),
                 LocalFolder = options.DestinationFolder
             };
-            downloader.Download( options.OverWrite );
+            try
+            {
+                downloader.Download( options.OverWrite );
+                Console.WriteLine( "File is downloaded." );
+            }
+            catch( FileExistsButNoOverwriteExeption )
+            {
+                Console.WriteLine( "File is exists in destination folder. If you want overwrite it use --overwrite switch!" );
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine( $"Error: {ex.Message}" );
+            }
         }
     }
 }
