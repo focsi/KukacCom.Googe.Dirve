@@ -18,19 +18,5 @@ namespace KukacCom.Google.Drive
 
             ParentFolder = parentFolder;
         }
-
-        protected void SetParentId( File body )
-        {
-            if( !String.IsNullOrEmpty( ParentFolder.FolderId ) )
-            {
-                body.Parents = new List<string>() { ParentFolder.FolderId };
-            }
-        }
-
-        protected bool IsValidId( string id )
-        {
-            return !String.IsNullOrWhiteSpace( id );
-        }
-
     }
 }

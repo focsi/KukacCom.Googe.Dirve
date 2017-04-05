@@ -49,9 +49,17 @@ namespace KukacCom.Google.Drive
             request.Upload();
         }
 
-        public bool IsExists()
+        private void SetParentId( File body )
         {
-            return IsValidId( ParentFolder.GetFileId( System.IO.Path.GetFileName( SourcePath ) ) );
+            if( !String.IsNullOrEmpty( ParentFolder.FolderId ) )
+            {
+                body.Parents = new List<string>() { ParentFolder.FolderId };
+            }
+        }
+
+        private bool IsValidId( string id )
+        {
+            return !String.IsNullOrWhiteSpace( id );
         }
     }
 }
