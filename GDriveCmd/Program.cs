@@ -29,11 +29,6 @@ namespace GDriveCmd
             }
         }
 
-        private static void Download( CommandLineOptions options )
-        {
-            throw new NotImplementedException();
-        }
-
         private static void Upload( CommandLineOptions options )
         {
             Drive drive = new Drive();
@@ -48,6 +43,19 @@ namespace GDriveCmd
             };
             //if ( !uploader.IsExists() )
             uploader.Upload( options.OverWrite );
+        }
+
+        private static void Download( CommandLineOptions options )
+        {
+            Drive drive = new Drive();
+            drive.Init();
+
+            Folder folder = new Folder( drive, System.IO.Path.GetDirectoryName( options.SourceFile ) );
+            Downloader downloader = new Downloader( drive, folder )
+            {
+                DriveFileName = System.IO.Path.GetFileName( options.SourceFile )
+            };
+            downloader.Download( options.OverWrite );
         }
     }
 }
