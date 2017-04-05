@@ -1,10 +1,6 @@
-﻿using Google.Apis.Drive.v3;
-using Google.Apis.Drive.v3.Data;
+﻿using Google.Apis.Drive.v3.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KukacCom.Google.Drive
 {
@@ -25,21 +21,20 @@ namespace KukacCom.Google.Drive
                 m_Body.Description = value;
             }
         }
-        public string SourcePath { get; set; }
 
-
+        
         public void Upload( bool overwrite )
         {
-            m_Body.Name = System.IO.Path.GetFileName( SourcePath );
+            m_Body.Name = FileName;
             
             m_Body.MimeType = MimeType;
 
             SetParentId( m_Body );
 
-            byte[] byteArray = System.IO.File.ReadAllBytes( SourcePath );
+            byte[] byteArray = System.IO.File.ReadAllBytes( System.IO.Path.Combine( LocalFolder, FileName ) );
             System.IO.MemoryStream stream = new System.IO.MemoryStream( byteArray );
 
-            string id = ParentFolder.GetFileId( System.IO.Path.GetFileName( SourcePath ) );
+            string id = ParentFolder.GetFileId( FileName );
             if( IsValidId( id ) && overwrite )
             {
                 var deletRequest = Drive.Service.Files.Delete( id );

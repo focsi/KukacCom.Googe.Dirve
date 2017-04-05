@@ -11,6 +11,10 @@ namespace KukacCom.Google.Drive
     {
         protected Folder ParentFolder { get; set; }
 
+        public string FileName { get; set; }
+
+        public string LocalFolder { get; set; }
+
         public FileOperation( Drive drive, Folder parentFolder ) : base(drive)
         {
             if( parentFolder == null )
