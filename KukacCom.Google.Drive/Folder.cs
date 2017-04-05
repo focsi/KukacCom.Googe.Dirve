@@ -18,14 +18,14 @@ namespace KukacCom.Google.Drive
         {
             var folders = path.Split( '/' );
             string parentId = "root";
-            foreach ( var folder in folders )
+            foreach( var folder in folders )
             {
                 parentId = GetFolderId( parentId, folder );
             }
             return parentId;
         }
 
-        public string GetFolderId( string parentId, string title )
+        private string GetFolderId( string parentId, string title )
         {
 
             string pageToken = String.Empty;
@@ -41,36 +41,35 @@ namespace KukacCom.Google.Drive
                 var response = request.Execute();
 
                 var folderId = response.Files.Where( f => f.Name == title ).Select( f => f.Id ).FirstOrDefault();
-                if ( !String.IsNullOrWhiteSpace( folderId ) )
+                if( !String.IsNullOrWhiteSpace( folderId ) )
                     return folderId;
 
                 pageToken = response.NextPageToken;
-            } while ( !String.IsNullOrWhiteSpace( pageToken ) );
+            } while( !String.IsNullOrWhiteSpace( pageToken ) );
 
-            return null;    
+            return null;
         }
 
-    }
+        public string GetFileId( string title )
+        {
 
-//       function listRootFolders( DriveService Drive  ) {
-//  var query = '"root" in parents and trashed = false and ' +
-//      'mimeType = "application/vnd.google-apps.folder"';
-//  var folders, pageToken;
-//  do {
-//    folders = Drive.Files.List({
-//      q: query,
-//      maxResults: 100,
-//      pageToken: pageToken
-//    });
-//    if (folders.items && folders.items.length > 0) {
-//      for (var i = 0; i < folders.items.length; i++) {
-//        var folder = folders.items[i];
-//        Logger.log('%s (ID: %s)', folder.title, folder.id);
-//      }
-//    } else {
-//      Logger.log('No folders found.');
-//    }
-//    pageToken = folders.nextPageToken;
-//  } while (pageToken);
-//}
+            string pageToken = String.Empty;
+            do
+            {
+                var request = Drive.Service.Files.List();
+                request.Q = "\"" + FolderId + "\" in parents and trashed = false and mimeType != \"application/vnd.google-apps.folder\"";
+                request.PageSize = 100;
+                request.PageToken = pageToken;
+                var response = request.Execute();
+
+                var id = response.Files.Where( f => f.Name == title ).Select( f => f.Id ).FirstOrDefault();
+                if( !String.IsNullOrWhiteSpace( id ) )
+                    return id;
+
+                pageToken = response.NextPageToken;
+            } while( !String.IsNullOrWhiteSpace( pageToken ) );
+
+            return null;
+        }
+    }
 }

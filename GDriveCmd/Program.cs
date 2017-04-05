@@ -53,7 +53,8 @@ namespace GDriveCmd
             Folder folder = new Folder( drive, System.IO.Path.GetDirectoryName( options.SourceFile ) );
             Downloader downloader = new Downloader( drive, folder )
             {
-                DriveFileName = System.IO.Path.GetFileName( options.SourceFile )
+                DriveFileName = System.IO.Path.GetFileName( options.SourceFile ),
+                LocalFolder = options.DestinationFolder
             };
             downloader.Download( options.OverWrite );
         }

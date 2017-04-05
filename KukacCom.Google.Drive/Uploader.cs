@@ -39,7 +39,7 @@ namespace KukacCom.Google.Drive
             byte[] byteArray = System.IO.File.ReadAllBytes( SourcePath );
             System.IO.MemoryStream stream = new System.IO.MemoryStream( byteArray );
 
-            string id = GetFileId( System.IO.Path.GetFileName( SourcePath ) );
+            string id = ParentFolder.GetFileId( System.IO.Path.GetFileName( SourcePath ) );
             if( IsValidId( id ) && overwrite )
             {
                 var deletRequest = Drive.Service.Files.Delete( id );
@@ -51,7 +51,7 @@ namespace KukacCom.Google.Drive
 
         public bool IsExists()
         {
-            return IsValidId( GetFileId( System.IO.Path.GetFileName( SourcePath ) ) );
+            return IsValidId( ParentFolder.GetFileId( System.IO.Path.GetFileName( SourcePath ) ) );
         }
     }
 }
